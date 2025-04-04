@@ -4,18 +4,18 @@ A Node.js proxy server deployed on **Vercel** that forwards HTTP requests to ano
 
 ---
 
-## 🌟 Features
+## Features
 - **Secure Tunneling**: Routes traffic through SSH to bypass firewall restrictions.
 - **Vercel Hosting**: No need for a dedicated server; runs on serverless functions.
 - **Environment Variables**: Stores credentials securely (no hardcoding).
-- **Automatic Forwarding**: All requests to `/` are proxied to the department server.
+- **Automatic Forwarding**: All requests to `/` are proxied to the private server.
 
 ---
 
-## 🛠️ How It Works
+## How It Works
 1. **Vercel Server** receives HTTP requests.
-2. **SSH Tunnel** is established to your department server.
-3. **Proxy Middleware** forwards requests to the department server's Node.js backend.
+2. **SSH Tunnel** is established to the private server.
+3. **Proxy Middleware** forwards requests to the private server's Node.js backend.
 4. **Response** is sent back to the client via Vercel.
 
 ```plaintext
