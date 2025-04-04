@@ -1,4 +1,4 @@
-# SSH Tunnel Proxy Server for Department Server Access
+# SSH Tunnel Proxy Server for Private Server Access
 
 A Node.js proxy server deployed on **Vercel** that forwards HTTP requests to another private server via **SSH tunneling**. Ideal for accessing restricted backend APIs without direct public exposure.
 
