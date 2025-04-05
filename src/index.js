@@ -166,11 +166,11 @@ app.all("/api/*", async (req, res) => {
     const result = await ssh.execCommand(curlCommand);
 
     // Log the response from the department server
-    /*console.log("Department Server Response:", {
+    console.log("Department Server Response:", {
       stdout: result.stdout,
-      stderr: result.stderr,
+      //stderr: result.stderr,
       exitCode: result.code,
-    });*/
+    });
 
     // Check if the command was successful
     if (result.code === 0) {
