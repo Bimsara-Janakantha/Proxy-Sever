@@ -4,7 +4,7 @@
   "description": "A Node.js proxy server deployed on **Vercel** that forwards HTTP requests to another private server via **SSH tunneling**. Ideal for accessing restricted backend APIs without direct public exposure.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "start": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
