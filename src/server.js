@@ -1,4 +1,7 @@
+// Import environment variables
 require("dotenv").config();
+
+// Import required libraries
 const express = require("express");
 const { NodeSSH } = require("node-ssh");
 const fs = require("fs");
@@ -8,11 +11,13 @@ const ssh = new NodeSSH();
 
 const proxyport = process.env.PORT;
 
+// Welcome endpoint
 app.get("/", async (req, res) => {
   console.log("New request from stranger!");
   res.status(200).send("Hello, I'm Proxy server. I can hear you!");
 });
 
+// Test tunnel endpoint
 app.get("/test", async (req, res) => {
   console.log("Tunnel Request Comming");
   try {
