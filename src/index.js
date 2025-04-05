@@ -115,6 +115,7 @@ app.all("/api/*", async (req, res) => {
 
   // Block unsupported methods
   if (!ALLOWED_METHODS.includes(req.method)) {
+    console.log(`Method ${req.method} not allowed.`);
     return res
       .status(405)
       .send(
@@ -165,11 +166,11 @@ app.all("/api/*", async (req, res) => {
     const result = await ssh.execCommand(curlCommand);
 
     // Log the response from the department server
-    console.log("Department Server Response:", {
+    /*console.log("Department Server Response:", {
       stdout: result.stdout,
       stderr: result.stderr,
       exitCode: result.code,
-    });
+    });*/
 
     // Check if the command was successful
     if (result.code === 0) {
