@@ -14,7 +14,7 @@ const ssh = new NodeSSH();
 app.use(express.json());
 
 // Allowed HTTP methods
-const ALLOWED_METHODS = ["GET", "POST", "PUT", "DELETE"];
+const ALLOWED_METHODS = ["GET", "POST", "PATCH", "DELETE"];
 
 // Configure CORS for future Cloudflare frontend (adjust origin as needed)
 app.use(
