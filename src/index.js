@@ -141,7 +141,7 @@ app.all("/api/*", async (req, res) => {
       .join(" ");
 
     // Prepare the request body (if any)
-    const body = ["POST", "PUT"].includes(req.method)
+    const body = ["POST", "PATCH"].includes(req.method)
       ? JSON.stringify(req.body)
       : "";
     const bodyFlag = body ? `-d '${body}'` : "";
