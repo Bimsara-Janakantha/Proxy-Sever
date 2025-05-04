@@ -30,7 +30,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  console.log("New request from stranger!");
+  console.log("Hello to a stranger!");
   res.status(200).send("Hello, I'm Proxy server. I can hear you!");
 });
 
