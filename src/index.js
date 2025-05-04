@@ -109,10 +109,25 @@ app.all("/api/*", async (req, res) => {
           await ssh.putFile(f.filepath, `${remoteTmp}/${f.filename}`);
         }
 
-        const formFlags = files
-          .map((f) => `-F "${f.fieldname}=@${remoteTmp}/${f.filename}"`)
-          .concat(Object.entries(fields).map(([k, v]) => `-F "${k}=${v}"`))
-          .join(" ");
+        const formFlags = [
+          ...files.map(
+            (f) => `-F "${f.fieldname}=@${remoteTmp}/${f.filename}"`
+          ),
+          ...Object.entries(fields).map(([k, v]) => {
+            // If it's userInfo, parse and re-stringify it to ensure valid JSON
+            let safeValue = v;
+            if (k === "userInfo") {
+              try {
+                const parsed = JSON.parse(v); // Ensure it's valid JSON
+                safeValue = JSON.stringify(parsed); // Then stringify properly
+              } catch (e) {
+                console.warn(`Warning: Could not JSON.parse field ${k}`, e);
+                safeValue = v;
+              }
+            }
+            return `-F "${k}=${safeValue}"`;
+          }),
+        ].join(" ");
 
         const targetPath = req.path.replace("/api", "");
         const targetUrl = `http://localhost:${process.env.DESTINATION_PORT}${targetPath}`;
