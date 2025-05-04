@@ -114,17 +114,19 @@ app.all("/api/*", async (req, res) => {
             (f) => `-F "${f.fieldname}=@${remoteTmp}/${f.filename}"`
           ),
           ...Object.entries(fields).map(([k, v]) => {
-            // If it's userInfo, parse and re-stringify it to ensure valid JSON
             let safeValue = v;
             if (k === "userInfo") {
               try {
-                const parsed = JSON.parse(v); // Ensure it's valid JSON
-                safeValue = JSON.stringify(parsed); // Then stringify properly
-              } catch (e) {
-                console.warn(`Warning: Could not JSON.parse field ${k}`, e);
+                const parsed = JSON.parse(v);
+                safeValue = JSON.stringify(parsed);
+              } catch {
                 safeValue = v;
               }
+
+              // Escape inner double quotes and wrap in single quotes
+              safeValue = `'${safeValue.replace(/"/g, '\\"')}'`;
             }
+
             return `-F "${k}=${safeValue}"`;
           }),
         ].join(" ");
