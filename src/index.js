@@ -10,7 +10,7 @@ const Busboy = require("busboy");
 const os = require("os");
 const path = require("path");
 
-const proxyport = process.env.PORT;
+const proxyport = process.env.PORT || 3000;
 const app = express();
 const ssh = new NodeSSH();
 
@@ -19,6 +19,12 @@ const ALLOWED_METHODS = ["GET", "POST", "PATCH", "DELETE"];
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
+
+// Global CORS headers for safety
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 app.use(
   cors({
@@ -109,27 +115,10 @@ app.all("/api/*", async (req, res) => {
           await ssh.putFile(f.filepath, `${remoteTmp}/${f.filename}`);
         }
 
-        const formFlags = [
-          ...files.map(
-            (f) => `-F "${f.fieldname}=@${remoteTmp}/${f.filename}"`
-          ),
-          ...Object.entries(fields).map(([k, v]) => {
-            let safeValue = v;
-            if (k === "userInfo") {
-              try {
-                const parsed = JSON.parse(v);
-                safeValue = JSON.stringify(parsed);
-              } catch {
-                safeValue = v;
-              }
-
-              // Escape inner double quotes and wrap in single quotes
-              safeValue = `${safeValue.replace(/"/g, '\\"')}`;
-            }
-
-            return `-F "${k}=${safeValue}"`;
-          }),
-        ].join(" ");
+        const formFlags = files
+          .map((f) => `-F "${f.fieldname}=@${remoteTmp}/${f.filename}"`)
+          .concat(Object.entries(fields).map(([k, v]) => `-F "${k}=${v}"`))
+          .join(" ");
 
         const targetPath = req.path.replace("/api", "");
         const targetUrl = `http://localhost:${process.env.DESTINATION_PORT}${targetPath}`;
@@ -151,6 +140,7 @@ app.all("/api/*", async (req, res) => {
         }
       } catch (err) {
         console.error("SSH error:", err);
+        res.setHeader("Access-Control-Allow-Origin", "*"); // ✅ Ensure CORS for error too
         res.status(500).send("SSH connection failed");
       } finally {
         ssh.dispose();
@@ -194,6 +184,8 @@ app.all("/api/*", async (req, res) => {
 
       const result = await ssh.execCommand(curlCommand);
 
+      res.setHeader("Access-Control-Allow-Origin", "*"); // ✅ CORS for non-multipart too
+
       if (result.code === 0) {
         try {
           const json = JSON.parse(result.stdout);
@@ -206,6 +198,7 @@ app.all("/api/*", async (req, res) => {
       }
     } catch (err) {
       console.error("SSH Error:", err);
+      res.setHeader("Access-Control-Allow-Origin", "*"); // ✅ Ensure CORS on error
       res.status(500).send("SSH connection failed");
     } finally {
       ssh.dispose();
