@@ -137,6 +137,8 @@ app.all("/api/*", async (req, res) => {
         const curlCommand = `curl -X PATCH ${formFlags} "${targetUrl}"`;
         const result = await ssh.execCommand(curlCommand);
 
+        res.setHeader("Access-Control-Allow-Origin", "*"); // ✅ CORS fix
+
         if (result.code === 0) {
           try {
             const json = JSON.parse(result.stdout);
