@@ -11,9 +11,11 @@
   "author": "Bimsara Gawesh",
   "license": "ISC",
   "dependencies": {
+    "busboy": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.19.2",
+    "fs-extra": "^11.3.0",
     "http-proxy-middleware": "^3.0.3",
     "node-ssh": "^13.2.1"
   },
