@@ -19,4 +19,4 @@ A Node.js proxy server deployed on **Vercel** that forwards HTTP requests to ano
 4. **Response** is sent back to the client via Vercel.
 
 ```plaintext
-Client → Vercel (Proxy) → SSH Tunnel → Department Server (Node.js)
+Client → Vercel (Proxy) → SSH Tunnel → Private Server (Node.js)
