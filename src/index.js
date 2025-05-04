@@ -119,7 +119,7 @@ app.all("/api/*", async (req, res) => {
     return res
       .status(405)
       .send(
-        `Method ${req.method} not allowed. Only GET, POST, PUT, DELETE are supported.`
+        `Method ${req.method} not allowed. Only GET, POST, PATCH, DELETE are supported.`
       );
   }
 
