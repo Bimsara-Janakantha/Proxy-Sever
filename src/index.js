@@ -124,7 +124,7 @@ app.all("/api/*", async (req, res) => {
               }
 
               // Escape inner double quotes and wrap in single quotes
-              safeValue = `'${safeValue.replace(/"/g, '\\"')}'`;
+              safeValue = `${safeValue.replace(/"/g, '\\"')}`;
             }
 
             return `-F "${k}=${safeValue}"`;
